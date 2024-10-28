@@ -1,0 +1,76 @@
+BEGIN MainActivity
+On App Launch:
+
+CALL UnitConverterApp() to display the UI.
+End MainActivity
+
+BEGIN UnitConverterApp (UI Logic)
+Declare Variables:
+
+DECLARE inputValue as empty TextFieldValue
+DECLARE result as an empty string
+Setup the Layout:
+
+DISPLAY Column Layout with padding of 16 dp and vertically aligned to center.
+Display Input Field:
+
+DISPLAY TextField with:
+LABEL: "Enter value to convert"
+INITIAL VALUE: inputValue
+ON CHANGE: UPDATE inputValue with new text
+Display Spacer (16 dp height)
+
+Add Celsius to Fahrenheit Conversion Button:
+
+DISPLAY Button with label: "Convert Celsius to Fahrenheit"
+ON BUTTON CLICK:
+CONVERT inputValue to Double, or default to 0.0 if invalid
+CALL convertTemperature() with the value
+SET result to the returned Fahrenheit value
+Display Spacer (16 dp height)
+
+Add Meters to Feet Conversion Button:
+
+DISPLAY Button with label: "Convert Meters to Feet"
+ON BUTTON CLICK:
+CONVERT inputValue to Double, or default to 0.0 if invalid
+CALL convertLength() with the value
+SET result to the returned Feet value
+Display Spacer (16 dp height)
+
+Display Conversion Result:
+
+DISPLAY Text with label: "Result: " + result
+End UnitConverterApp
+
+BEGIN convertTemperature (Temperature Conversion Logic)
+INPUT: celsius (Double)
+PROCESS:
+CALCULATE fahrenheit = (celsius * 9 / 5) + 32
+RETURN: fahrenheit + " °F"
+End convertTemperature
+BEGIN convertLength (Length Conversion Logic)
+INPUT: meters (Double)
+PROCESS:
+CALCULATE feet = meters * 3.28084
+RETURN: feet + " ft"
+End convertLength
+BEGIN UnitConversionTests (Testing Framework)
+Test Case 1: Celsius to Fahrenheit Conversion
+
+INPUT: celsius = 0.0
+EXPECTED RESULT: "32.0 °F"
+ASSERT convertTemperature(0.0) equals "32.0 °F"
+Test Case 2: Meters to Feet Conversion
+
+INPUT: meters = 1.0
+EXPECTED RESULT: "3.28084 ft"
+ASSERT convertLength(1.0) equals "3.28084 ft"
+End UnitConversionTests
+
+BEGIN useAppContext (Instrumented Test)
+Verify App Context:
+
+GET the appContext from InstrumentationRegistry
+ASSERT that appContext.packageName equals "com.example.unitconvertingtesting"
+End useAppContext
